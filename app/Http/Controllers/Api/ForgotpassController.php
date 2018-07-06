@@ -21,7 +21,6 @@ class ForgotpassController extends Controller
 	    if(!$user){
 	    	return response()->json(['success' => false, 'message' => 'not a valid email'],404);
 	    }
-
 	    DB::table('password_resets')->insert([
 	        'email' 	 => $request->email,
 	        'token' 	 => str_random(60),
