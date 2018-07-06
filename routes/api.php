@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/test','ApiController@signup');
-Route::post('/signin','SigninController@signin');
+Route::post('/signup','ApiController@signup');
+Route::post('/signin','ApiController@signin');
 Route::post('/sendtoken','ForgotpassController@sendpasswordtoken');
-Route::post('/resetpass','ForgotpassController@resetpassword');
+Route::post('/resetpass/{token}',['uses'=>'ForgotpassController@resetpassword']);
