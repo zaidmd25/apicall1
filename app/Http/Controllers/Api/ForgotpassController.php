@@ -13,24 +13,35 @@ class ForgotpassController extends Controller
     public function sendpasswordtoken(Request $request)
 	{
 		$request->validate([
+    		'email' 	 => 'required|email|max:255',
     		'token' 	 => 'required',
-    		'email' 	 => 'required|email|max:255'
+    		'old_password' 	   => 'required',
+			'new_password'     => 'required',
+			'confirm_password' => 'required|same:new_password'
     	]);
-		$user = User::where('email', $request->email);
+		$user = User::where('email',$request->get('email'))->first();
 
 	    if(!$user){
 	    	return response()->json(['success' => false, 'message' => 'not a valid email'],404);
 	    }
 	    DB::table('password_resets')->insert([
-	        'email' 	 => $request->email,
+	        'email' 	 => $request->get('email'),
 	        'token' 	 => str_random(60),
 	        'created_at' => Carbon::now()
 	    ]);
-
-	    $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
-	    $token 	   = $tokenData->token;
-	    $email 	   = $request->email;
-	    return response()->json(['success' => true, 'message' =>'new token created'], 200);
+	    	$data = $request->all();
+		if(!\Hash::check($data['old_password'], $user->password)){
+			return response()->json(['success' => false, 'message' => 'the password doesnt match'],404);
+		}
+		else{
+			$user = User::find($user['id']);
+	        $user['password'] = \Hash::make($request->get('new_password'));
+	        $user->save();
+	            return response()->json(['success' => true, 'message' => 'password updated'],200);
+		}
 	}
 }
-	     
+	    // $tokenData = DB::table('password_resets')->where('email',$request->get('email'))->first();
+	    // $token 	   = $tokenData->token;
+	    // $email 	   = $request->get('email');
+	    // return response()->json(['success' => true, 'message' =>'new token created'], 200);
