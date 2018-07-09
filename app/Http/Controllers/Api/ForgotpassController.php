@@ -67,8 +67,8 @@ class ForgotpassController extends Controller
 		}else{
 	        $user->password = \Hash::make($request->get('new_password'));
 	        $user->save();
+	        $token->delete();
 	        return response()->json(['success' => true, 'message' => 'password updated'],200);
 		}
-
 	}
 }
