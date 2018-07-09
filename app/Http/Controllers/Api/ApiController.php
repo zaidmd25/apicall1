@@ -58,7 +58,7 @@ class ApiController extends Controller
             ], 401);
         }
         $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
+        $tokenResult = $user->createToken('Token');
         $token = $tokenResult->token;
 
         if ($request->remember_me){

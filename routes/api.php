@@ -18,5 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/signup','ApiController@signup');
 Route::post('/signin','ApiController@signin');
-Route::post('/sendtoken','ForgotpassController@sendpasswordtoken');
-Route::post('/resetpass/{token}',['uses'=>'ForgotpassController@resetpassword']);
+Route::post('/sendtoken{token}','ForgotpassController@sendpasswordtoken');
+// Route::post('/resetpass/{token}',['uses'=>'ForgotpassController@resetpassword']);
+Route::post('/resetpassword',['uses'=>'ForgotpassController@resetpassword']);
