@@ -61,11 +61,10 @@ class ForgotpassController extends Controller
 		 }
     	$data = $request->all();
  
-		$user = User::find(18);
-		if(!\Hash::check($data['old_password'], $user['password'])){
+		$user = User::where('email',$request->get('email'))->first();
+		if(!\Hash::check($data['old_password'], $user->password)){
 			return response()->json(['success' => false, 'message' => 'the password doesnt match'],404);
 		}else{
-			$user = User::find(18);
 	        $user->password = \Hash::make($request->get('new_password'));
 	        $user->save();
 	        return response()->json(['success' => true, 'message' => 'password updated'],200);
