@@ -1,4 +1,5 @@
-<form name="form" method="POST" action="{{ url('/reset/form') }}">
+@extends('reminder')
+<form name="form" method="POST" action="">
 	<input type="password" class="form-control" name="password">
 	<input type="password" class="form-control" name="password_confirmation">
 	<input type="hidden" name="token" value="{{ $token }}">

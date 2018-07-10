@@ -27,3 +27,4 @@ Route::post('/sendemail',function () {
 	});
 });
 Route::post('/sendreset','ForgotpassController@SentResetLink');
+// Route::get('')
