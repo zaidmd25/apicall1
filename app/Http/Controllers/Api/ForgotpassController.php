@@ -9,7 +9,7 @@ use DB;
 
 class ForgotpassController extends Controller
 {
-    //
+
     public function sendpasswordtoken(Request $request)
 	{
 		$request->validate([
@@ -29,19 +29,9 @@ class ForgotpassController extends Controller
 	    $tokenData = DB::table('password_resets')->where('email',$request->get('email'))->first();
 	    $token 	   = $tokenData->token;
 	    $email 	   = $request->get('email');
-	    $myquery = DB::table('password_resets')->select('token')->get();
-          echo "";print_r($myquery);
+	    $myquery   = DB::table('password_resets')->select('token')->get();
+          echo "";print_r($myquery);exit;
 	    return response()->json(['success' => true, 'message' =>'new token created'], 200);
-		// if(!\Hash::check($data['old_password'], $user->password)){
-		// 	return response()->json(['success' => false, 'message' => 'the password doesnt match'],404);
-		// }
-		// else{
-		// 	$user = User::find($user['id']);
-	 //        $user['password'] = \Hash::make($request->get('new_password'));
-	 //        $user->save();
-	 //            return response()->json(['success' => true, 'message' => 'password updated'],200);
-		// 	// DB::table('oauth_access_tokens')->where('email', $user->email)->delete();
-		// }
 	}
 
 	public function resetpassword(Request $request)
@@ -67,8 +57,30 @@ class ForgotpassController extends Controller
 		}else{
 	        $user->password = \Hash::make($request->get('new_password'));
 	        $user->save();
-	        $token->delete();
+	        $token = DB::table('password_resets')->where('token',$request->get('token'))->where('email',$request->get('email'))->delete();
 	        return response()->json(['success' => true, 'message' => 'password updated'],200);
 		}
 	}
+
+	public function SentResetLink(Request $request)
+	{
+
+		$request->validate([
+			'email'			=> 'required|email|max:255'
+		]);
+		$user = User::where('email', $request->email)->first();
+		if ($user) {
+
+			DB::table('password_resets')->insert([
+				'email' 	 => $request->get('email'),
+				'token' 	 => str_random(60),
+				'created_at' => Carbon::now()
+			]);
+		    $tokenData = DB::table('password_resets')->where('email',$request->get('email'))->first();
+		    $token 	   = $tokenData->token;
+		    $email 	   = $request->get('email');
+    	}
+    	Mail::send('email.reminder',[$token,'email'=>$request->email])
+	}
+
 }

@@ -11,9 +11,9 @@ use Auth;
 
 class ApiController extends Controller
 {
-    //
-    public function signup(Request $request){
 
+    public function signup(Request $request)
+    {
        	$validator = Validator::make($request->all(),[ 
             'firstname' 		=> 'required',
             'surname' 			=> 'required',
@@ -44,8 +44,8 @@ class ApiController extends Controller
     		return response()->json(['success' => false, 'message' => 'Error in creating data'],404);
     	}
     }
-    public function signin(Request $request){
-
+    public function signin(Request $request)
+    {
         $request->validate([
             'email'      => 'required|email|max:255',
             'password'   => 'required',
