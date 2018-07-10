@@ -69,8 +69,8 @@ class ForgotpassController extends Controller
 			'email'			=> 'required|email|max:255'
 		]);
 		$user = User::where('email', $request->email)->first();
-		if ($user) {
-
+		if ($user)
+		{
 			DB::table('password_resets')->insert([
 				'email' 	 => $request->get('email'),
 				'token' 	 => str_random(60),
@@ -80,7 +80,15 @@ class ForgotpassController extends Controller
 		    $token 	   = $tokenData->token;
 		    $email 	   = $request->get('email');
     	}
-    	Mail::send('email.reminder',[$token,'email'=>$request->email])
+    		$user = User::where('email',$request->get('email'))->first();
+			\Mail::send('email.reminder',['token'=>$token,'email'=>$request->get('email')] ,function ($m) use($user) {
+				$m->to($user->email)->subject('Your Reminder!');
+			});
 	}
 
+	// public function ResetForm(Request $request)
+	// {
+
+	// 	return view('email.reset')
+	// }
 }

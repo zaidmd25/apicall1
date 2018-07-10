@@ -21,3 +21,9 @@ Route::post('/signin','ApiController@signin');
 Route::post('/sendtoken{token}','ForgotpassController@sendpasswordtoken');
 // Route::post('/resetpass/{token}',['uses'=>'ForgotpassController@resetpassword']);
 Route::post('/resetpassword',['uses'=>'ForgotpassController@resetpassword']);
+Route::post('/sendemail',function () {
+	Mail::send('email.reminder',[], function ($m) {
+		$m->to('mdzaiduv@gmail.com')->subject('Your Reminder!');
+	});
+});
+Route::post('/sendreset','ForgotpassController@SentResetLink');
