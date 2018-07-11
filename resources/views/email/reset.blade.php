@@ -1,4 +1,7 @@
-    @if ($errors->any())
+	@if (Session::has('errors'))	
+	@php
+		$errors=Session::get('errors');
+	@endphp
         <div class="alert alert-danger">
             <strong>Whoops!</strong> There were some problems with your input.<br><br>
             <ul>
@@ -13,5 +16,5 @@
 	PasswordConfirmation<input type="password" class="form-control" name="password_confirmation"><br>
 	<input type="hidden" name="token" value="{{ $token }}">
 	<input type="hidden"  name="email" value="{{ $email }}">
-	<button type="submit" >submit</button>
+	<button type="submit">submit</button>
 </form>

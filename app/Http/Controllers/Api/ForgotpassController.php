@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\User;
 use DB;
@@ -36,13 +37,17 @@ class ForgotpassController extends Controller
 
 	public function resetpassword(Request $request)
 	{
-		$request->validate([
+		$validator = Validator::make($request->all(),[
 			'email' 	 	  	    => 'required|email|max:255',
     		'token' 	 	   		=> 'required',
 			'password'     			=> 'required',
 			'password_confirmation' => 'required|same:password'
     	]);
-    	
+    	// $data =$request->all();
+		if($validator->fails()){
+            return response()->json(['success' => false, 'errors' =>$validator->getMessageBag()->toArray()], 400);
+		}
+
 		 $token = DB::table('password_resets')->where('token',$request->get('token'))->where('email',$request->get('email'))->first();
 		 if(!$token){
 		 	return response()->json(['success' => false, 'message' => 'not a valid email/token'],404);
@@ -82,17 +87,4 @@ class ForgotpassController extends Controller
 			});
 	}
 
-	public function ResetForm(Request $request, $token)
-	{
-
-		$tokencheck = DB::table('password_resets')->where('token',$token)->where('email',$request->get('email'))->first();
-
-		if($tokencheck){
-
-			return view('email.reset',['token'=>$token,'email'=>$request->get('email')]);
-		}else{
-
-			return view('/home');
-		}
-	}
 }

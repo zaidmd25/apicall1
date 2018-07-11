@@ -26,5 +26,5 @@ Route::post('/sendemail',function () {
 	});
 });
 Route::post('/sendreset','ForgotpassController@SentResetLink');
-Route::get('/reset/form/{token}','ForgotpassController@ResetForm');
+Route::get('/reset/form/{token}','ApiForgotController@ResetForm');
 // Route::get('')
