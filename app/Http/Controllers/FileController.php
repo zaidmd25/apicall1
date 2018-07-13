@@ -17,7 +17,7 @@ class FileController extends Controller
 
 	public function uploadfile(Request $request)
 	{
-		$this->validate($request, [
+		$this->validate($request,[
 		   'filename' => 'required|mimes:jpeg,bmp,png',
 		]);
 		$data = User::first();
@@ -30,7 +30,7 @@ class FileController extends Controller
 			if(!\File::isDirectory($destinationPath))
 			{
 				\File::makeDirectory($destinationPath);
-			}
+			}		
 				$file->move($destinationPath,$fileName);
 				$data->filename = $fileName;
 				$data->save();
