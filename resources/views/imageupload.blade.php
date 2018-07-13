@@ -41,11 +41,11 @@ margin-top:2%;
         <div class="col-md-6">
             <form action="multiuploads" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
-                <label for="Product Name">Product photos (can attach more than one):</label>
+                <label for="Product Name">Upload files of format(jpeg,bmp,png):</label>
             <br />
                 <input type="file" class="form-control" name="filename" multiple />
             <br /><br />
-                <input type="submit" class="btn btn-primary btn-submit" value="Upload" />
+                <input type="submit" class="btn btn-primary" value="Upload" />
             </form>
         </div>
     </div>
