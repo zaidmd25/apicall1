@@ -86,5 +86,4 @@ class ForgotpassController extends Controller
 				$m->to($user->email)->subject('Your Reminder!');
 			});
 	}
-
 }

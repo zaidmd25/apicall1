@@ -15,4 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/reset/form/{token}','Api\ForgotpassController@ResetForm');
-
+Route::get('/multiuploads', 'FileController@uploadform');
+Route::post('/multiuploads', 'FileController@uploadfile');
