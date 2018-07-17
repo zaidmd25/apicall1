@@ -80,10 +80,15 @@ class ForgotpassController extends Controller
 		    $tokenData = DB::table('password_resets')->where('email',$request->get('email'))->first();
 		    $token 	   = $tokenData->token;
 		    $email 	   = $request->get('email');
-    	}
-    		$user = User::where('email',$request->get('email'))->first();
+    	
+    		// $user = User::where('email',$request->get('email'))->first();
 			\Mail::send('email.reminder',['token'=>$token,'email'=>$request->get('email')] ,function ($m) use($user) {
 				$m->to($user->email)->subject('Your Reminder!');
 			});
+			return response()->json(['email' =>$request->get('email'),'success' => true,'message'  => 'Reset Link has been send to the following mail'],200);
+		}
+		else{
+			return response()->json(['email' =>$request->get('email'),'success' => false,'message' => 'invalid email'],401);
+		}
 	}
 }
